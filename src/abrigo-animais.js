@@ -62,51 +62,28 @@ class AbrigoAnimais {
 
     /// Minha function de verificacao e gatos
     function verificarBrinquedosPreferidos() {
-      let brinquedosAdotadosPessoa1 = new Set()
-      let brinquedosAdotadosPessoa2 = new Set()
-
+      let brinquedosGatoPessoa1 = new Set()
+      let brinquedosGatoPessoa2 = new Set()
+      
       for (let i of listaAnimais) {
         let preferidos = animais[i].brinquedos // Lista com os brinquedos preferidos de cada animal escolhido
-        let conflito = preferidos.some(b => brinquedosAdotadosPessoa1.has(b)) // .has verifica se b ta no set e .some verifica se pelo menos um desses é true
 
-        let preferidosIntersecçãoPessoa1 = listaBrinquedosPessoa1.filter(a => preferidos.includes(a)) // Cria uma nova lista com a intersecçãode pessoa1PodeAdotar e preferidos 
+        let preferidosIntersecçãoPessoa1 = listaBrinquedosPessoa1.filter(a => preferidos.includes(a))
 
-        if (preferidos.join() === preferidosIntersecçãoPessoa1.join()) { // Compara se a nova lista é igual preferidos
-          if (animais[i].animal === "gato") { // Verifica se os animais são gatos
-            if (conflito) { // Se sim e tiver conflito, muda pra false
-              pessoa1PodeAdotar.push(false)
-            } else { // Se não tem conflito, permite ser true
-              pessoa1PodeAdotar.push(true)
-              preferidos.forEach(b => brinquedosAdotadosPessoa1.add(b))
-            }
-          } else { // Se não é gato = true
-            pessoa1PodeAdotar.push(true)
-            preferidos.forEach(b => brinquedosAdotadosPessoa1.add(b))
-          }
-        } else { // Se a ordem ta errada = false
+        if (preferidos.join() === preferidosIntersecçãoPessoa1.join()) {
+          pessoa1PodeAdotar.push(true) // O join é porque no js não da pra comparar 2 arrays, tem que transformar em string
+        } else {
           pessoa1PodeAdotar.push(false)
         }
 
-        let conflito2 = preferidos.some(b => brinquedosAdotadosPessoa2.has(b))
-
-        let preferidosIntersecçãoPessoa2 = listaBrinquedosPessoa2.filter(a => preferidos.includes(a))
-
-        if (preferidos.join() === preferidosIntersecçãoPessoa2.join()) {
-          if (animais[i].animal === "gato") {
-            if (conflito2) {
-              pessoa2PodeAdotar.push(false)
-            } else {
-              pessoa2PodeAdotar.push(true)
-              preferidos.forEach(b => brinquedosAdotadosPessoa2.add(b))
-            }
-          } else {
-            pessoa2PodeAdotar.push(true)
-            preferidos.forEach(b => brinquedosAdotadosPessoa2.add(b))
-          }
+        let prefirosIntersecçãoPessoa2 = listaBrinquedosPessoa2.filter(a => preferidos.includes(a))
+        if (preferidos.join() == prefirosIntersecçãoPessoa2.join()) {
+          pessoa2PodeAdotar.push(true)
         } else {
           pessoa2PodeAdotar.push(false)
         }
       }
+
     }
 
     function loco() {
@@ -211,11 +188,4 @@ class AbrigoAnimais {
 
 export { AbrigoAnimais as AbrigoAnimais };
 
-// Teste
-const abrigo = new AbrigoAnimais()
-
-console.log(abrigo.encontraPessoas('BOLA,LASER',
-      'BOLA,NOVELO,RATO,LASER', 'Mimi,Fofo,Rex,Bola')) // { lista: [ 'Bola - abrigo', 'Rex - pessoa 1' ] }
-
-// Por que ta retornando undefined
-// Tem que fazer a lógica pra animal duplicado
+// Tentei de todas as formas, mas não consegui fazer a verificação dos gatos :(
